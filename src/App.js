@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { CssBaseline, Grid } from "@material-ui/core";
+
+import Header from "./components/Header/Header";
+import List from "./components/Lists/Lists";
+import Maps from "./components/Maps/Maps";
+import Weather from "./components/weather/weather";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CssBaseline />
+      <Header />
+      <Grid container spacing={3} style={{ width: "100%" }}>
+        <Grid item xs={12} md={4}>
+          <List />
+        </Grid>
+        <Grid map-weather xs={12} md={8}>
+          <Grid map xs={10} md={6}>
+            <Maps />
+          </Grid>
+            <Grid map xs={12}>
+              <Weather />
+          </Grid>
+        </Grid>
+      </Grid>
+    </>
   );
 }
 
