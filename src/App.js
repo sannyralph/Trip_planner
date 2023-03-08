@@ -10,8 +10,12 @@ import Weather from "./components/weather/weather";
 function App() {
 
   const [places, setPlaces] = useState([]);
+
+  const [coordinates, setCoordinates] = useState({lat: 0, lng: 0 });
+  const [bounds, setBounds] = useState(null);
  
   useEffect(() => {
+    console.log(coordinates, bounds);
     getPlacesData()
       .then((data) => {
         console.log(data)
@@ -29,7 +33,11 @@ function App() {
         </Grid>
         <Grid map-weather xs={12} md={8}>
           <Grid map xs={10} md={6}>
-            <Map />
+            <Map 
+              setCoordinate={setCoordinates}
+              setBounds={setBounds}
+              coordinates={coordinates}
+            />
           </Grid>
             <Grid map xs={12}>
               <Weather />
