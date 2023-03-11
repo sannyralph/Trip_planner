@@ -1,30 +1,31 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, createRef} from "react";
 import {CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
 
 import PlaceDetails from '../PlaceDetails/placeDetails';
 
 import useStyles from './styles';
 
-const List = () => {
+const List = ({places, childClicked, isLoading, type, setType, rating, setRating}) => {
 
     const classes = useStyles();
-    const [type, setType] = useState('restaurants');
-    const [rating, setRating] = useState('');
+    const [elRefs, setElRefs] = useState([]);
 
-    const places = [
-        {name: 'my place'},
-        {name: 'his place'},
-        {name: 'her place'},
-        {name: 'The place'},
-        {name: 'our place'},
-        {name: 'your place'},
-        {name: 'mamas place'},
-        {name: 'papas place'},
-    ]
+   useEffect(() => {
+
+    setElRefs((refs) => Array(places?.length).fill().map((_, i)=> refs[i] || createRef()));
+        
+    
+   }, [places]);
 
     return (
         <div className={classes.container}>
            <Typography variant='h4'>Restaurants, Hotels & Attractions Around you </Typography>
+           {isLoading ? (
+               <div className={classes.loading}>
+                   <CircularProgress size="5rem"/>
+               </div>
+           ) : (
+               <>
            <FormControl className={classes.formControl}>
                 <InputLabel>Type</InputLabel>
                 <Select value={type} onChange={(e)=> setType(e.target.value)}>
@@ -46,10 +47,16 @@ const List = () => {
            <Grid container spacing={3} className={classes.list}>
                 {places?.map((place, i) => (
                     <Grid item ke={i} xs={12}>
-                        <PlaceDetails place={place} />
+                        <PlaceDetails 
+                        place={place} 
+                            selected={Number(childClicked) === i }
+                            refProp={elRefs[i]}
+                        />
                     </Grid>
                 ))}  
            </Grid>
+            </>
+           )}
         </div>
     )
 }
